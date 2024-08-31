@@ -32,73 +32,27 @@ float angleX = 0.0f;
 float angleY = 0.0f;
 float angleZ = 0.0f;
 
+float cube1Angle = 0.0f; // Ângulo de rotação do primeiro cubo
+float cube2Angle = 0.0f; // Ângulo de rotação do segundo cubo
+float cube3Angle = 0.0f; // Ângulo de rotação do terceiro cubo
+
+bool rotateCube1 = false; // Flag para controlar se o primeiro cubo deve rotacionar
+bool rotateCube2 = false; // Flag para controlar se o segundo cubo deve rotacionar
+bool rotateCube3 = false; // Flag para controlar se o terceiro cubo deve rotacionar
+
+
 void drawCube() {
-    glEnable(GL_TEXTURE_2D); // Habilita a textura
 
-    glBindTexture(GL_TEXTURE_2D, texture[0]); // Face frontal
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f,  0.5f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f, -0.5f,  0.5f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f,  0.5f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f,  0.5f,  0.5f);
-    glEnd();
-
-    glBindTexture(GL_TEXTURE_2D, texture[1]); // Face traseira
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f, -0.5f, -0.5f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f, -0.5f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f,  0.5f, -0.5f);
-    glEnd();
-
+    glPushMatrix();
     
+    if (rotateCube1) {
+        cube1Angle -= 2.0f; // Ajuste o valor para a velocidade desejada
+        if (cube1Angle < -360) cube1Angle += 360;
+    }
     
-    // Face superior
-    glBegin(GL_QUADS);
-    glColor3f(0.0, 1.0, 0.0); // Branco
-    glVertex3f(-0.5,  0.5, -0.5);
-    glVertex3f(-0.5,  0.5,  0.5);
-    glVertex3f( 0.5,  0.5,  0.5);
-    glVertex3f( 0.5,  0.5, -0.5);
-    glEnd();
+    glRotatef(cube1Angle, 1.0f, 0.0f, 0.0f);
 
-    // Face inferior
-    glBegin(GL_QUADS);
-    glColor3f(1.0, 1.0, 1.0); // Branco
-    glVertex3f(-0.5, -0.5, -0.5);
-    glVertex3f( 0.5, -0.5, -0.5);
-    glVertex3f( 0.5, -0.5,  0.5);
-    glVertex3f(-0.5, -0.5,  0.5);
-    glEnd();
-
-
-
-    glBindTexture(GL_TEXTURE_2D, texture[2]); // Face lateral direita
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.5f, -0.5f, -0.5f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f,  0.5f, -0.5f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f,  0.5f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f( 0.5f, -0.5f,  0.5f);
-    glEnd();
-
-    glBindTexture(GL_TEXTURE_2D, texture[3]); // Face lateral esquerda
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(-0.5f,  0.5f, -0.5f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f(-0.5f,  0.5f,  0.5f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f, -0.5f,  0.5f);
-    glEnd();
-
-    glDisable(GL_TEXTURE_2D); // Desabilita a textura
-}
-
-void drawSecondCube() {
     glEnable(GL_TEXTURE_2D); // Habilita a textura
-
-    glPushMatrix(); // Salva a matriz de transformação atual
-
-    // Translada o segundo cubo para uma posição abaixo do primeiro
-    glTranslatef(0.0f, -1.5f, 0.0f);
 
     glBindTexture(GL_TEXTURE_2D, texture[4]); // Face frontal
     glBegin(GL_QUADS);
@@ -153,6 +107,81 @@ void drawSecondCube() {
     glTexCoord2f(1.0f, 1.0f); glVertex3f(-0.5f,  0.5f,  0.5f);
     glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f, -0.5f,  0.5f);
     glEnd();
+    
+    glDisable(GL_TEXTURE_2D); // Desabilita a textura
+}
+
+void drawSecondCube() {
+
+
+    glEnable(GL_TEXTURE_2D); // Habilita a textura
+
+    glPushMatrix(); // Salva a matriz de transformação atual
+
+    if (rotateCube2) {
+        cube2Angle += 2.0f; // Ajuste o valor para a velocidade desejada
+        if (cube2Angle > 360) cube2Angle -= 360;
+    }
+
+    // Translada o segundo cubo para uma posição abaixo do primeiro
+    glTranslatef(0.0f, 1.5f, 0.0f);
+    
+    glRotatef(cube2Angle, 1.0f, 0.0f, 0.0f);
+    
+
+glBindTexture(GL_TEXTURE_2D, texture[0]); // Face frontal
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f,  0.5f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f, -0.5f,  0.5f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f,  0.5f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f,  0.5f,  0.5f);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, texture[1]); // Face traseira
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f, -0.5f, -0.5f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f, -0.5f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f,  0.5f, -0.5f);
+    glEnd();
+
+    
+    
+    // Face superior
+    glBegin(GL_QUADS);
+    glColor3f(0.0, 1.0, 0.0); // Branco
+    glVertex3f(-0.5,  0.5, -0.5);
+    glVertex3f(-0.5,  0.5,  0.5);
+    glVertex3f( 0.5,  0.5,  0.5);
+    glVertex3f( 0.5,  0.5, -0.5);
+    glEnd();
+
+    // Face inferior
+    glBegin(GL_QUADS);
+    glColor3f(1.0, 1.0, 1.0); // Branco
+    glVertex3f(-0.5, -0.5, -0.5);
+    glVertex3f( 0.5, -0.5, -0.5);
+    glVertex3f( 0.5, -0.5,  0.5);
+    glVertex3f(-0.5, -0.5,  0.5);
+    glEnd();
+
+
+
+    glBindTexture(GL_TEXTURE_2D, texture[2]); // Face lateral direita
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.5f, -0.5f, -0.5f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f,  0.5f, -0.5f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f,  0.5f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f( 0.5f, -0.5f,  0.5f);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, texture[3]); // Face lateral esquerda
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-0.5f,  0.5f, -0.5f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-0.5f,  0.5f,  0.5f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f, -0.5f,  0.5f);
+    glEnd();
 
     glDisable(GL_TEXTURE_2D); // Desabilita a textura
 
@@ -166,8 +195,16 @@ void drawThirdCube() {
 
     glPushMatrix(); // Salva a matriz de transformação atual
 
+    if (rotateCube3) {
+        cube3Angle -= 2.0f; // Ajuste o valor para a velocidade desejada
+        if (cube3Angle < 360) cube3Angle += 360;
+    }
+
     // Translada o segundo cubo para uma posição abaixo do primeiro
-    glTranslatef(0.0f, -3.0f, 0.0f);
+    glTranslatef(0.0f, -1.5f, 0.0f);
+    glRotatef(cube3Angle, 1.0f, 0.0f, 0.0f);
+
+    
 
     glBindTexture(GL_TEXTURE_2D, texture[8]); // Face frontal
     glBegin(GL_QUADS);
@@ -252,16 +289,27 @@ void display() {
 }
 
 void update(int value) {
-    angleX += 2.0f;
-    angleY += 3.0f;
-    angleZ += 1.0f;
+    angleX += 0.0f;
+    angleY += 0.0f;
+    angleZ += 0.0f;
     
     if (angleX > 360) angleX -= 360;
     if (angleY > 360) angleY -= 360;
     if (angleZ > 360) angleZ -= 360;
+
+    // Controle de rotação dos cubos
+    static int lastUpdate = 0;
+    int currentTime = glutGet(GLUT_ELAPSED_TIME);
+
+    if (currentTime - lastUpdate > 2000) { // 2 segundos
+        rotateCube1 = !rotateCube1;
+        rotateCube2 = !rotateCube2;
+        rotateCube3 = !rotateCube3;
+        lastUpdate = currentTime;
+    }
     
     glutPostRedisplay();
-    glutTimerFunc(16, update, 0);
+    glutTimerFunc(36, update, 0);
 }
 
 void init() {
