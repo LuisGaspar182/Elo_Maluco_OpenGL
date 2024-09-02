@@ -35,6 +35,71 @@ float angleZ = 0.0f;
 void drawCube() {
     glEnable(GL_TEXTURE_2D); // Habilita a textura
 
+    glBindTexture(GL_TEXTURE_2D, texture[4]); // Face frontal
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f,  0.5f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f, -0.5f,  0.5f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f,  0.5f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f,  0.5f,  0.5f);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, texture[5]); // Face traseira
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f, -0.5f, -0.5f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f, -0.5f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f,  0.5f, -0.5f);
+    glEnd();
+
+    
+    
+    // Face superior
+    glBegin(GL_QUADS);
+    glColor3f(0.0, 1.0, 0.0); // Branco
+    glVertex3f(-0.5,  0.5, -0.5);
+    glVertex3f(-0.5,  0.5,  0.5);
+    glVertex3f( 0.5,  0.5,  0.5);
+    glVertex3f( 0.5,  0.5, -0.5);
+    glEnd();
+
+    // Face inferior
+    glBegin(GL_QUADS);
+    glColor3f(1.0, 1.0, 1.0); // Branco
+    glVertex3f(-0.5, -0.5, -0.5);
+    glVertex3f( 0.5, -0.5, -0.5);
+    glVertex3f( 0.5, -0.5,  0.5);
+    glVertex3f(-0.5, -0.5,  0.5);
+    glEnd();
+
+
+
+    glBindTexture(GL_TEXTURE_2D, texture[6]); // Face lateral direita
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.5f, -0.5f, -0.5f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f,  0.5f, -0.5f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f,  0.5f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f( 0.5f, -0.5f,  0.5f);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, texture[7]); // Face lateral esquerda
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-0.5f,  0.5f, -0.5f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-0.5f,  0.5f,  0.5f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f, -0.5f,  0.5f);
+    glEnd();
+    
+    glDisable(GL_TEXTURE_2D); // Desabilita a textura
+}
+
+void drawSecondCube() {
+    glEnable(GL_TEXTURE_2D); // Habilita a textura
+
+    glPushMatrix(); // Salva a matriz de transformação atual
+
+    // Translada o segundo cubo para uma posição abaixo do primeiro
+    glTranslatef(0.0f, 1.5f, 0.0f);
+
     glBindTexture(GL_TEXTURE_2D, texture[0]); // Face frontal
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f,  0.5f);
@@ -90,71 +155,6 @@ void drawCube() {
     glEnd();
 
     glDisable(GL_TEXTURE_2D); // Desabilita a textura
-}
-
-void drawSecondCube() {
-    glEnable(GL_TEXTURE_2D); // Habilita a textura
-
-    glPushMatrix(); // Salva a matriz de transformação atual
-
-    // Translada o segundo cubo para uma posição abaixo do primeiro
-    glTranslatef(0.0f, -1.5f, 0.0f);
-
-    glBindTexture(GL_TEXTURE_2D, texture[4]); // Face frontal
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f,  0.5f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f, -0.5f,  0.5f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f,  0.5f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f,  0.5f,  0.5f);
-    glEnd();
-
-    glBindTexture(GL_TEXTURE_2D, texture[5]); // Face traseira
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f, -0.5f, -0.5f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f, -0.5f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f,  0.5f, -0.5f);
-    glEnd();
-
-    
-    
-    // Face superior
-    glBegin(GL_QUADS);
-    glColor3f(0.0, 1.0, 0.0); // Branco
-    glVertex3f(-0.5,  0.5, -0.5);
-    glVertex3f(-0.5,  0.5,  0.5);
-    glVertex3f( 0.5,  0.5,  0.5);
-    glVertex3f( 0.5,  0.5, -0.5);
-    glEnd();
-
-    // Face inferior
-    glBegin(GL_QUADS);
-    glColor3f(1.0, 1.0, 1.0); // Branco
-    glVertex3f(-0.5, -0.5, -0.5);
-    glVertex3f( 0.5, -0.5, -0.5);
-    glVertex3f( 0.5, -0.5,  0.5);
-    glVertex3f(-0.5, -0.5,  0.5);
-    glEnd();
-
-
-
-    glBindTexture(GL_TEXTURE_2D, texture[6]); // Face lateral direita
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.5f, -0.5f, -0.5f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f,  0.5f, -0.5f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f,  0.5f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f( 0.5f, -0.5f,  0.5f);
-    glEnd();
-
-    glBindTexture(GL_TEXTURE_2D, texture[7]); // Face lateral esquerda
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(-0.5f,  0.5f, -0.5f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f(-0.5f,  0.5f,  0.5f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f, -0.5f,  0.5f);
-    glEnd();
-
-    glDisable(GL_TEXTURE_2D); // Desabilita a textura
 
     glPopMatrix(); // Restaura a matriz de transformação anterior
 
@@ -167,7 +167,7 @@ void drawThirdCube() {
     glPushMatrix(); // Salva a matriz de transformação atual
 
     // Translada o segundo cubo para uma posição abaixo do primeiro
-    glTranslatef(0.0f, -3.0f, 0.0f);
+    glTranslatef(0.0f, -1.5f, 0.0f);
 
     glBindTexture(GL_TEXTURE_2D, texture[8]); // Face frontal
     glBegin(GL_QUADS);
@@ -261,7 +261,7 @@ void update(int value) {
     if (angleZ > 360) angleZ -= 360;
     
     glutPostRedisplay();
-    glutTimerFunc(16, update, 0);
+    glutTimerFunc(32, update, 0);
 }
 
 void init() {
