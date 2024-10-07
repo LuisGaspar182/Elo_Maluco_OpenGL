@@ -5,6 +5,7 @@
 #include "texture_manager.h"
 
 class Cube {
+    float rotationAngle = 0.0f;
 public:
     Cube(TextureManager& textureManager, float x, float y, float z, int textureIndices[6])
         : textureManager(textureManager), x(x), y(y), z(z) {
@@ -17,6 +18,7 @@ public:
         glEnable(GL_TEXTURE_2D);
         glPushMatrix();
         glTranslatef(x, y, z);
+        glRotatef(rotationAngle, 0.0f, 1.0f, 0.0f); // Rotação em torno do eixo Y
 
         drawFace(textureIndices[0], -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f); // Front
         drawFace(textureIndices[1], -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f); // Back
@@ -27,6 +29,11 @@ public:
 
         glPopMatrix();
         glDisable(GL_TEXTURE_2D);
+    }
+    void updateTextures(int newTextures[6]){
+        for (int i = 0; i < 6; ++i) {
+            textureIndices[i] = newTextures[i];
+        }
     }
 
 private:

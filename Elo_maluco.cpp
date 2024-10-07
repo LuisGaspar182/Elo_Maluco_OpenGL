@@ -16,7 +16,16 @@ float xdiff = 0.0f;
 float ydiff = 0.0f;
 
 // Posição inicial da câmera no eixo Z
-float cameraZ = -5.0f; 
+float cameraZ = -5.0f;
+
+// Índice do cubo selecionado
+int selectedCube = 0;
+
+// Texturas atuais
+int linhavalor20 = -1;
+int colunavalor20 = -1;
+
+std::vector<std::vector<int>> matrizDoXml;
 
 TextureManager textureManager;
 Cube* cubes[4];
@@ -74,6 +83,98 @@ void mouseMotion(int x, int y) {
     }
 }
 
+void atualizarTexturasCubos() {
+    for (int i = 0; i < 4; i++) {
+        if (cubes[i] != nullptr) {
+            int textures[6] = {matrizDoXml[i][0], matrizDoXml[i][1], 20, 20, matrizDoXml[i][2], matrizDoXml[i][3]};
+            cubes[i]->updateTextures(textures);
+        }
+    }
+}
+
+void trocarTexturaAbaixo() {
+    if (linhavalor20 < 3 && linhavalor20 >= 0 && colunavalor20 >= 0 && colunavalor20 < 4) {
+        int texturaBaixo = matrizDoXml[linhavalor20 + 1][colunavalor20];
+        matrizDoXml[linhavalor20 + 1][colunavalor20] = 20;
+        matrizDoXml[linhavalor20][colunavalor20] = texturaBaixo;
+        linhavalor20++;
+        atualizarTexturasCubos();
+    } else {
+        std::cerr << "Erro ao trocar textura abaixo: índices fora dos limites." << linhavalor20 << " " << colunavalor20 << std::endl;
+    }
+}
+
+void trocarTexturaAcima() {
+    if (linhavalor20 > 0) {
+        int texturaAcima = matrizDoXml[linhavalor20 - 1][colunavalor20];
+        matrizDoXml[linhavalor20 - 1][colunavalor20] = 20;
+        matrizDoXml[linhavalor20][colunavalor20] = texturaAcima;
+        linhavalor20--;
+        atualizarTexturasCubos();
+    } else {
+        std::cerr << "Erro ao trocar textura acima: índices fora dos limites." << linhavalor20 << " " << colunavalor20 << std::endl;
+    }
+}
+
+void keyboard(unsigned char key, int x, int y) {
+    int texture;
+    switch(key) {
+        case 'w':
+        case 'W':
+            // Seleciona o cubo de cima
+            selectedCube = (selectedCube > 0) ? selectedCube - 1 : 0;
+            break;
+        case 's':
+        case 'S':
+            // Seleciona o cubo de baixo
+            selectedCube = (selectedCube < 3) ? selectedCube + 1 : 3;
+            break;
+        case 'a':
+        case 'A':
+            // Rotaciona o cubo selecionado em 90 graus
+            texture = matrizDoXml[selectedCube][0];
+            matrizDoXml[selectedCube][0] = matrizDoXml[selectedCube][1];
+            matrizDoXml[selectedCube][1] = matrizDoXml[selectedCube][2];
+            matrizDoXml[selectedCube][2] = matrizDoXml[selectedCube][3];
+            matrizDoXml[selectedCube][3] = texture;
+            if(linhavalor20 == selectedCube){
+                if(colunavalor20 > 0){
+                    colunavalor20--;
+                } else {
+                    colunavalor20 = 3;
+                }
+            }
+            atualizarTexturasCubos();
+            break;
+        case 'd':
+        case 'D':
+            // Rotaciona o cubo selecionado em -90 graus
+            texture = matrizDoXml[selectedCube][0];
+            matrizDoXml[selectedCube][0] = matrizDoXml[selectedCube][3];
+            matrizDoXml[selectedCube][3] = matrizDoXml[selectedCube][2];
+            matrizDoXml[selectedCube][2] = matrizDoXml[selectedCube][1];
+            matrizDoXml[selectedCube][1] = texture;
+            if(linhavalor20 == selectedCube){
+                if(colunavalor20 < 3){
+                    colunavalor20++;
+                } else {
+                    colunavalor20 = 0;
+                }
+            }
+            atualizarTexturasCubos();
+            break;
+        case ' ':
+            // Troca a textura abaixo da textura 20
+            trocarTexturaAbaixo();
+            break;
+        case 'c':
+        case 'C':
+            // Troca a textura acima da textura 20
+            trocarTexturaAcima();
+            break;
+    }
+    glutPostRedisplay();
+}
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -93,9 +194,21 @@ void display() {
     glutSwapBuffers();
 }
 
+void encontrarValor20(const std::vector<std::vector<int>>& matrizDoXml) {
+    for (int i = 0; i < matrizDoXml.size(); i++) {
+        for (int j = 0; j < matrizDoXml[i].size(); j++) {
+            if (matrizDoXml[i][j] == 20) {
+                linhavalor20 = i;
+                colunavalor20 = j;
+            }
+        }
+    }
+}
+
 int main(int argc, char** argv) {
     // Obtenha a matriz do XML
-    std::vector<std::vector<int>> matrizDoXml = obterMatrizDoXml("EloMaluco_estadoAtual_exemplo.xml");
+    matrizDoXml = obterMatrizDoXml("EloMaluco_estadoAtual_exemplo.xml");
+    encontrarValor20(matrizDoXml);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -107,6 +220,7 @@ int main(int argc, char** argv) {
     glutDisplayFunc(display);
     glutMouseFunc(mouse);
     glutMotionFunc(mouseMotion);
+    glutKeyboardFunc(keyboard);
 
     glutMainLoop();
 
