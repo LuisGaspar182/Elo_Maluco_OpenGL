@@ -22,3 +22,22 @@
 // 10 - vri (verde inferior)
 // 11 - ami (amarelo inferior)
 // 20 - vzo (vazio)
+
+// --------------------------------------------------------
+
+// Rotacionar cubo:
+// 'd' ou 'D' - rotaciona 90 graus no sentido horário
+// 'a' ou 'A' - rotaciona 90 graus no sentido anti-horário
+
+
+// Mover o espaço vazio:
+// ' ' (tecla de espaço) - move o espaço vazio para baixo
+// 'c' ou 'C' - move o espaço vazio para cima
+
+// O espaço vazio é representado pela textura 20 (vzo). 
+// Ao pressionar espaço, o vazio troca de posição com a textura abaixo dele.
+// Ao pressionar 'C', o vazio troca de posição com a textura acima dele.
+
+// Essas teclas permitem manipular a posição do espaço vazio no quebra-cabeça,
+// facilitando a reorganização das peças para resolver o desafio.
+
